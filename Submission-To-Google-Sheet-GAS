@@ -1,0 +1,34 @@
+function doPost(e) {
+  try {
+    Logger.log("Data received: " + JSON.stringify(e.parameter));
+
+    if (e && e.parameter) {
+      var sheet = SpreadsheetApp.openById('SHEET_ID_GOES_HERE').getSheetByName('Sheet1');
+    
+      var organization = e.parameter.organization || "No Organization Provided";
+      var category = e.parameter.category || "No Category Provided";
+      var contact_info = e.parameter.contact_info || "No Contact Info Provided";
+      var address = e.parameter.address || "No Address Provided";
+      var cross_streets = e.parameter.cross_streets || "No Cross Streets Provided";
+      var retrieved_datetime = e.parameter.retrieved_datetime || "No Retrieved Date/Time Provided";
+      var available_datetime = e.parameter.available_datetime || "No Available Date/Time Provided";
+      var good_until = e.parameter.good_until || "No Available Date/Time Provided";
+      var payment_required = e.parameter.payment_required || "No Payment Info Provided";
+      var hours = e.parameter.hours || "No Hours Provided";
+      var details = e.parameter.details || "No Details Provided";
+      var link = e.parameter.link || "No Link Provided";
+      var source = e.parameter.source || "No Source Provided";
+
+      // Append the data to the sheet
+      sheet.appendRow([organization, category, contact_info, address, cross_streets, retrieved_datetime, available_datetime, good_until, payment_required, hours, details, link, source]);
+
+      return ContentService.createTextOutput("Success");
+    } else {
+      Logger.log("No parameters received.");
+      return ContentService.createTextOutput("Failure: No parameters received.");
+    }
+  } catch (error) {
+    Logger.log("Error: " + error.message);
+    return ContentService.createTextOutput("Failure: " + error.message);
+  }
+}
